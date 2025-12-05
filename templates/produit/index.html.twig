@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>📦 Liste des Produits</h1>
+        <h1> Liste des Produits</h1>
         <a href="{{ path('app_produit_new') }}" class="btn btn-success">
             + Nouveau Produit
         </a>
@@ -37,10 +37,10 @@
                 <td>{{ produit.createdAt ? produit.createdAt|date('d/m/Y H:i') : '' }}</td>
                 <td>
                     <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-sm btn-info">
-                        👁️ Voir
+                         Voir
                     </a>
                     <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-sm btn-warning">
-                        ✏️ Modifier
+                         Modifier
                     </a>
                 </td>
             </tr>
@@ -54,6 +54,6 @@
 
     <div class="alert alert-info">
         <strong>{{ produits|length }}</strong> produit(s) au total
-        | <span class="text-danger">🔴 Stock bas</span> : Produits avec moins de 5 unités
+        | <span class="text-danger" style="color:red;"> Stock bas !!</span> : Produits avec moins de 5 unités
     </div>
 {% endblock %}
