@@ -1,6 +1,6 @@
  StockManager - Application de Gestion de Stock
 👥 Équipe
-Étudiant : LAIDI RAYANE , Xavier  Carrier .
+Étudiant : LAIDI Rayane , XAVIER Carrier .
 
 Projet : MVP Symfony - Gestion de Stock
 
@@ -39,8 +39,8 @@ Symfony CLI
 Méthode 1 : Installation rapide avec SQLite
 bash
 # 1. Cloner le projet
-git clone https://github.com/RayaneLaidi/gestion-stock.git
-cd gestion-stock
+git clone https://github.com/RayaneLaidi/FrameWork_Symfony
+cd gestion-stock-new
 
 # 2. Installer les dépendances
 composer install
@@ -62,7 +62,7 @@ php bin/console doctrine:fixtures:load
 # 7. Lancer le serveur
 symfony server:start
 # OU
-php -S localhost:8000 -t public/
+php -S localhost:8000 -t public/ 
 
 # 8. Accéder à l'application
 http://localhost:8000/produit
