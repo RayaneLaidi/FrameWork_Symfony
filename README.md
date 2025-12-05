@@ -39,7 +39,7 @@ Symfony CLI
 Méthode 1 : Installation rapide avec SQLite
 bash
 # 1. Cloner le projet
-git clone https://github.com/[ton-compte]/gestion-stock.git
+git clone https://github.com/RayaneLaidi/gestion-stock.git
 cd gestion-stock
 
 # 2. Installer les dépendances
