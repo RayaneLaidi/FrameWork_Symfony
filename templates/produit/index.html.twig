@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Produits{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>📦 Liste des Produits</h1>
+        <a href="{{ path('app_produit_new') }}" class="btn btn-success">
+            + Nouveau Produit
+        </a>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th>Catégorie</th>
+                <th>Créé le</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr class="{% if produit.quantite < 5 %}table-danger{% endif %}">
+                <td>{{ produit.nom }}</td>
+                <td>{{ produit.description|slice(0, 50) }}{% if produit.description|length > 50 %}...{% endif %}</td>
+                <td>{{ produit.prix }} €</td>
+                <td>
+                    <span class="badge {% if produit.quantite < 5 %}bg-danger{% else %}bg-success{% endif %}">
+                        {{ produit.quantite }}
+                    </span>
+                </td>
+                <td>{{ produit.categorie ? produit.categorie.nom : 'Non catégorisé' }}</td>
+                <td>{{ produit.createdAt ? produit.createdAt|date('d/m/Y H:i') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-sm btn-info">
+                        👁️ Voir
+                    </a>
+                    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-sm btn-warning">
+                        ✏️ Modifier
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7" class="text-center">Aucun produit trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="alert alert-info">
+        <strong>{{ produits|length }}</strong> produit(s) au total
+        | <span class="text-danger">🔴 Stock bas</span> : Produits avec moins de 5 unités
+    </div>
+{% endblock %}

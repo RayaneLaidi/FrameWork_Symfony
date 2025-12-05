@@ -1,0 +1,462 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Produit - Gestion de Stock{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .form-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        border: none;
+        overflow: hidden;
+    }
+    
+    .form-header {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .form-section {
+        background: #f8fafc;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-left: 4px solid #4facfe;
+    }
+    
+    .form-section-title {
+        color: #2d3748;
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .form-section-title i {
+        font-size: 1.2rem;
+        color: #4facfe;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .form-control, .form-select {
+        border-radius: 8px;
+        border: 2px solid #e2e8f0;
+        padding: 12px 15px;
+        transition: all 0.3s;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #4facfe;
+        box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+    }
+    
+    .form-text {
+        color: #718096;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        color: white;
+    }
+    
+    .btn-cancel {
+        background: white;
+        border: 2px solid #e2e8f0;
+        color: #4a5568;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .btn-cancel:hover {
+        background: #f7fafc;
+        border-color: #cbd5e0;
+    }
+    
+    .required-star {
+        color: #fc8181;
+        margin-left: 3px;
+    }
+    
+    .stock-preview {
+        background: #edf2f7;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .stock-indicator {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #48bb78;
+    }
+    
+    .stock-indicator.low {
+        background: #f56565;
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+    
+    .price-preview {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #2d3748;
+        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding: 10px 0;
+    }
+    
+    .char-count {
+        text-align: right;
+        font-size: 0.8rem;
+        color: #a0aec0;
+        margin-top: 5px;
+    }
+    
+    .char-count.near-limit {
+        color: #ed8936;
+    }
+    
+    .char-count.over-limit {
+        color: #f56565;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="form-card">
+                <!-- En-tête du formulaire -->
+                <div class="form-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="display-6 fw-bold mb-2">
+                                <i class="fas fa-plus-circle"></i> Nouveau Produit
+                            </h1>
+                            <p class="mb-0 opacity-75">
+                                Ajoutez un nouveau produit à votre inventaire. Remplissez tous les champs obligatoires.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <a href="{{ path('app_produit_index') }}" class="btn btn-light">
+                                <i class="fas fa-arrow-left"></i> Retour à la liste
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulaire -->
+                <div class="p-4 p-md-5">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                    
+                    <!-- Section 1 : Informations de base -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-info-circle"></i> Informations de base
+                        </h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form_label(form.nom, null, {'label_attr': {'class': 'form-label'}}) }}
+                                <span class="required-star">*</span>
+                                {{ form_widget(form.nom, {'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Ex: iPhone 15 Pro Max',
+                                    'autofocus': 'autofocus'
+                                }}) }}
+                                <div class="form-text">
+                                    Nom clair et descriptif du produit
+                                </div>
+                                <div class="char-count" id="nom-count">0/255</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                {{ form_label(form.categorie, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.categorie, {'attr': {
+                                    'class': 'form-select'
+                                }}) }}
+                                <div class="form-text">
+                                    Catégorisez votre produit pour une meilleure organisation
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2 : Détails du produit -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-tag"></i> Détails du produit
+                        </h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form_label(form.prix, null, {'label_attr': {'class': 'form-label'}}) }}
+                                <span class="required-star">*</span>
+                                {{ form_widget(form.prix, {'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': '0.00',
+                                    'step': '0.01'
+                                }}) }}
+                                <div class="price-preview mt-2" id="price-preview">
+                                    <span id="price-value">0.00</span> €
+                                </div>
+                                <div class="form-text">
+                                    Prix unitaire en euros (TTC)
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                {{ form_label(form.quantite, null, {'label_attr': {'class': 'form-label'}}) }}
+                                <span class="required-star">*</span>
+                                {{ form_widget(form.quantite, {'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': '0',
+                                    'min': '0'
+                                }}) }}
+                                
+                                <div class="stock-preview">
+                                    <div class="stock-indicator" id="stock-indicator"></div>
+                                    <div>
+                                        <strong id="stock-status">Stock normal</strong>
+                                        <div class="small" id="stock-message">Quantité suffisante</div>
+                                    </div>
+                                </div>
+                                <div class="form-text">
+                                    Quantité disponible en stock
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3 : Description -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-align-left"></i> Description
+                        </h3>
+                        
+                        <div class="mb-4">
+                            {{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.description, {'attr': {
+                                'class': 'form-control',
+                                'rows': '6',
+                                'placeholder': 'Décrivez votre produit en détail...'
+                            }}) }}
+                            <div class="form-text">
+                                Détails techniques, spécifications, informations complémentaires
+                            </div>
+                            <div class="char-count" id="desc-count">0 caractères</div>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action -->
+                    <div class="row mt-5">
+                        <div class="col-md-6 mb-3">
+                            <button type="submit" class="btn-submit">
+                                <i class="fas fa-check-circle"></i> Créer le produit
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ path('app_produit_index') }}" class="btn-cancel">
+                                <i class="fas fa-times"></i> Annuler
+                            </a>
+                        </div>
+                    </div>
+                    
+                    {{ form_end(form) }}
+                </div>
+            </div>
+            
+            <!-- Aide et informations -->
+            <div class="mt-4 p-4 bg-light rounded">
+                <h5 class="mb-3">
+                    <i class="fas fa-lightbulb text-warning"></i> Conseils pour un bon référencement
+                </h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="d-flex gap-3">
+                            <div class="text-primary">
+                                <i class="fas fa-bullseye fa-2x"></i>
+                            </div>
+                            <div>
+                                <h6>Nom précis</h6>
+                                <p class="small mb-0">Utilisez un nom clair et descriptif</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex gap-3">
+                            <div class="text-success">
+                                <i class="fas fa-chart-line fa-2x"></i>
+                            </div>
+                            <div>
+                                <h6>Prix compétitif</h6>
+                                <p class="small mb-0">Fixez un prix adapté au marché</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex gap-3">
+                            <div class="text-info">
+                                <i class="fas fa-clipboard-check fa-2x"></i>
+                            </div>
+                            <div>
+                                <h6>Stock optimal</h6>
+                                <p class="small mb-0">Maintenez un stock suffisant</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Compteur de caractères pour le nom
+        const nomInput = document.getElementById('{{ form.nom.vars.id }}');
+        const nomCount = document.getElementById('nom-count');
+        
+        if (nomInput) {
+            nomInput.addEventListener('input', function() {
+                const length = this.value.length;
+                nomCount.textContent = length + '/255';
+                if (length > 200) {
+                    nomCount.classList.add('near-limit');
+                } else {
+                    nomCount.classList.remove('near-limit');
+                }
+            });
+            nomInput.dispatchEvent(new Event('input'));
+        }
+        
+        // Compteur de caractères pour la description
+        const descInput = document.getElementById('{{ form.description.vars.id }}');
+        const descCount = document.getElementById('desc-count');
+        
+        if (descInput) {
+            descInput.addEventListener('input', function() {
+                const length = this.value.length;
+                descCount.textContent = length + ' caractères';
+                if (length > 1000) {
+                    descCount.classList.add('near-limit');
+                } else {
+                    descCount.classList.remove('near-limit');
+                }
+            });
+            descInput.dispatchEvent(new Event('input'));
+        }
+        
+        // Prévisualisation du prix
+        const prixInput = document.getElementById('{{ form.prix.vars.id }}');
+        const priceValue = document.getElementById('price-value');
+        
+        if (prixInput) {
+            prixInput.addEventListener('input', function() {
+                let value = parseFloat(this.value) || 0;
+                priceValue.textContent = value.toFixed(2);
+            });
+            prixInput.dispatchEvent(new Event('input'));
+        }
+        
+        // Indicateur de stock
+        const quantiteInput = document.getElementById('{{ form.quantite.vars.id }}');
+        const stockIndicator = document.getElementById('stock-indicator');
+        const stockStatus = document.getElementById('stock-status');
+        const stockMessage = document.getElementById('stock-message');
+        
+        if (quantiteInput) {
+            quantiteInput.addEventListener('input', function() {
+                const value = parseInt(this.value) || 0;
+                
+                if (value === 0) {
+                    stockIndicator.className = 'stock-indicator low';
+                    stockStatus.textContent = 'Stock épuisé';
+                    stockMessage.textContent = 'Aucune unité disponible';
+                } else if (value < 5) {
+                    stockIndicator.className = 'stock-indicator low';
+                    stockStatus.textContent = 'Stock bas';
+                    stockMessage.textContent = value + ' unité(s) restante(s)';
+                } else if (value < 10) {
+                    stockIndicator.className = 'stock-indicator';
+                    stockStatus.textContent = 'Stock moyen';
+                    stockMessage.textContent = value + ' unité(s) disponible(s)';
+                } else {
+                    stockIndicator.className = 'stock-indicator';
+                    stockStatus.textContent = 'Stock confortable';
+                    stockMessage.textContent = value + ' unité(s) disponible(s)';
+                }
+            });
+            quantiteInput.dispatchEvent(new Event('input'));
+        }
+        
+        // Validation du formulaire
+        const form = document.querySelector('form.needs-validation');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        }
+        
+        // Focus sur le premier champ
+        if (nomInput) {
+            nomInput.focus();
+        }
+    });
+</script>
+{% endblock %}
