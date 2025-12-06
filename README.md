@@ -206,8 +206,6 @@ extension=sqlite3
 extension=pdo_sqlite
 Problème : Erreurs de permissions
 bash
-# Linux/Mac
-chmod -R 777 var/
 
 # Windows (PowerShell)
 icacls var /grant Everyone:F /T
