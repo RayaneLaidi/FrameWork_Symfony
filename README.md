@@ -156,32 +156,6 @@ php bin/console doctrine:schema:validate
 php bin/console make:fixture
 
 # Charger les fixtures
-php bin/console doctrine:fixtures:load
-📁 Structure du Projet
-text
-gestion-stock/
-├── src/
-│   ├── Entity/
-│   │   ├── Produit.php           # Entité Produit
-│   │   └── Categorie.php         # Entité Categorie
-│   ├── Controller/
-│   │   ├── ProduitController.php # CRUD Produit
-│   │   └── CategorieController.php # CRUD Categorie
-│   ├── Form/
-│   │   ├── ProduitType.php       # Formulaire Produit
-│   │   └── CategorieType.php     # Formulaire Categorie
-│   └── Repository/               # Repositories Doctrine
-├── templates/
-│   ├── base.html.twig            # Template principal
-│   ├── produit/                  # Vues Produit
-│   │   ├── index.html.twig       # Liste
-│   │   ├── new.html.twig         # Création
-│   │   ├── edit.html.twig        # Édition
-│   │   └── show.html.twig        # Détail
-│   └── categorie/                # Vues Categorie
-├── migrations/                   # Migrations de base de données
-├── public/                       # Dossier web accessible
-└── var/                          # Cache, logs, base SQLite
 🎨 Technologies Utilisées
 Backend : Symfony 6.4
 
