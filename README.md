@@ -1,4 +1,4 @@
- StockManager - Application de Gestion de Stock
+ #StockManager - Application de Gestion de Stock
 👥 Équipe
 Étudiant : LAIDI Rayane , XAVIER Carrier .
 
